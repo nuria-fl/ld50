@@ -1,6 +1,7 @@
 import "phaser";
+
 import { PlayerSprite } from "../sprites/player";
-import { DialogService, createDialogBox } from "../utils/Dialog";
+import { createDialogBox, DialogService } from "../utils/Dialog";
 import { SceneWithDialog } from "../utils/SceneWithDialog";
 
 export class Home extends SceneWithDialog {
@@ -15,7 +16,7 @@ export class Home extends SceneWithDialog {
 
   preload() {}
 
-  create() {
+  async create() {
     this.dialog = new DialogService(this);
     this.player = new PlayerSprite(this, 0, 0);
 
@@ -30,9 +31,10 @@ export class Home extends SceneWithDialog {
     this.physics.add.collider(this.player, this.stairs, () => {
       this.scene.start("town");
     });
-    this.createDialogBox(
+    await this.createDialogBox(
       "Oh no! My data shows that the climate change is reaching a point of no return. I need to fix this!"
     );
+    await this.createDialogBox("I need to shop for groceries, send a letter to the president");
   }
 
   update() {
@@ -49,7 +51,7 @@ export class Home extends SceneWithDialog {
     }
   }
 
-  createDialogBox(text: string) {
+  async createDialogBox(text: string) {
     return createDialogBox(text, this);
   }
 }
