@@ -2,12 +2,10 @@ import "phaser";
 
 import { PlayerSprite } from "../sprites/player";
 import { DialogService } from "../utils/Dialog";
-import { SceneWithDialog } from "../utils/SceneWithDialog";
+import { BaseScene } from "../utils/BaseScene";
 
-export class Home extends SceneWithDialog {
-  public player: PlayerSprite;
+export class Home extends BaseScene {
   public stairs: Phaser.Physics.Arcade.StaticGroup;
-  private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
   private fx_door: any = null;
 
   constructor() {
@@ -19,16 +17,10 @@ export class Home extends SceneWithDialog {
   }
 
   async create() {
-    this.dialog = new DialogService(this);
-    this.player = new PlayerSprite(this, 0, 0);
-
-    this.cursors = this.input.keyboard.createCursorKeys();
+    super.create();
 
     this.stairs = this.physics.add.staticGroup();
     this.stairs.create(500, 500);
-
-    this.cameras.main.setBounds(0, 0, 10000, 10000);
-    this.cameras.main.startFollow(this.player, false);
 
     this.physics.add.collider(this.player, this.stairs, () => {
       this.fx_door = this.sound.add("fx_door");
@@ -36,31 +28,12 @@ export class Home extends SceneWithDialog {
       this.scene.start("town");
     });
     await this.createDialogBox(
-      "Oh no! My data shows that the climate change is reaching a point of no return. I need to fix this!"
+      "Oh no! My data shows that the climate change is reaching the point of no return."
     );
-    await this.createDialogBox(
-      "I need to shop for groceries, send a letter to the president"
-    );
+    await this.createDialogBox("I must prevent this! I can view the list of things I need to do by pressing the T key.");
   }
 
   update() {
-    if (this.cursors.left.isDown) {
-      this.player.moveLeft();
-    } else if (this.cursors.right.isDown) {
-      this.player.moveRight();
-    } else if (this.cursors.up.isDown) {
-      this.player.moveUp();
-    } else if (this.cursors.down.isDown) {
-      this.player.moveDown();
-    } else {
-      this.player.moveStop();
-    }
-  }
-
-  async createDialogBox(text: string) {
-    this.player.disableMovement();
-    return this.dialog
-      .createDialogBox(text)
-      .then(() => this.player.enableMovement());
+    super.update();
   }
 }

@@ -1,7 +1,7 @@
-import { SceneWithDialog } from "./SceneWithDialog";
+import { BaseScene } from "./BaseScene";
 
 export class DialogService {
-  public scene: SceneWithDialog;
+  public scene: BaseScene;
   public timedEvent;
   public text: Phaser.GameObjects.Text;
   public config = {
@@ -15,7 +15,7 @@ export class DialogService {
     dialogSpeed: 4,
   };
   public eventCounter;
-  public visible;
+  public isVisible: boolean;
   public dialog;
   public graphics;
   public animating = false;
@@ -32,19 +32,19 @@ export class DialogService {
     // used for animating the text
     this.eventCounter = 0;
     // if the dialog window is shown
-    this.visible = true;
+    this.isVisible = true;
 
     // Create the dialog window
     this.createWindow();
   }
 
   public toggleWindow() {
-    this.visible = !this.visible;
+    this.isVisible = !this.isVisible;
     if (this.text) {
-      this.text.visible = this.visible;
+      this.text.visible = this.isVisible;
     }
     if (this.graphics) {
-      this.graphics.visible = this.visible;
+      this.graphics.visible = this.isVisible;
     }
   }
 
@@ -170,12 +170,12 @@ export class DialogService {
 
   createDialogBox(text: string): Promise<void> {
     return new Promise((resolve) => {
-      this.scene.dialog.init();
-      this.scene.dialog.setText(text);
+      this.init();
+      this.setText(text);
       const addListener = () => {
         this.scene.input.keyboard.once("keydown", () => {
-          if (!this.scene.dialog.animating) {
-            this.scene.dialog.toggleWindow();
+          if (!this.animating) {
+            this.toggleWindow();
             resolve();
           } else {
             addListener();

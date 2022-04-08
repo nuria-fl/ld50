@@ -65,4 +65,8 @@ export class PlayerSprite extends Phaser.Physics.Arcade.Sprite {
   public enableMovement() {
     this.canMove = true;
   }
+
+  public toggleMovement() {
+    this.canMove = !this.canMove;
+  }
 }
