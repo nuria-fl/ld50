@@ -7,7 +7,7 @@ export default class Start extends Phaser.Scene {
 
   create() {
     this.add
-      .text(342, 284, "Start Game", {
+      .text(270, 270, "Start Game", {
         fontFamily: "Courier New",
         fontSize: "40px",
         color: "#fff",
