@@ -1,4 +1,7 @@
 export default class Start extends Phaser.Scene {
+  music: any = null;
+  is_muted: boolean = false;
+
   constructor() {
     super("start");
   }
@@ -12,8 +15,8 @@ export default class Start extends Phaser.Scene {
   }
 
   create() {
-    var music = this.sound.add("bg_music_menu");
-    music.play({
+    this.music = this.sound.add("bg_music_menu");
+    this.music.play({
       loop: true,
       volume: 0.1,
     });
@@ -29,7 +32,26 @@ export default class Start extends Phaser.Scene {
         this.goToPlay();
       });
 
-    this.input.keyboard.on("keydown", () => {
+    this.input.keyboard.on("keydown", (event: KeyboardEvent) => {
+      if (event.key == "m") {
+        if (this.is_muted) {
+          console.log("unmuted");
+          this.music.mute = false;
+          this.music.play({
+            loop: true,
+            volume: 0.1,
+          });
+        } else {
+          console.log("muted");
+          this.music.mute = true;
+          this.music.volume = 0;
+        }
+
+        this.is_muted = !this.is_muted;
+
+        return;
+      }
+
       this.goToPlay();
     });
   }
