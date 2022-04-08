@@ -1,11 +1,10 @@
 import "phaser";
 
 import { PlayerSprite } from "../sprites/player";
-import { createDialogBox, DialogService } from "../utils/Dialog";
+import { DialogService } from "../utils/Dialog";
 import { SceneWithDialog } from "../utils/SceneWithDialog";
 
 export class Home extends SceneWithDialog {
-  dialog: DialogService;
   public player: PlayerSprite;
   public stairs: Phaser.Physics.Arcade.StaticGroup;
   private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -14,7 +13,7 @@ export class Home extends SceneWithDialog {
     super("home");
   }
 
-  preload() {}
+  preload() { }
 
   async create() {
     this.dialog = new DialogService(this);
@@ -52,6 +51,7 @@ export class Home extends SceneWithDialog {
   }
 
   async createDialogBox(text: string) {
-    return createDialogBox(text, this);
+    this.player.disableMovement()
+    return this.dialog.createDialogBox(text).then(() => this.player.enableMovement());
   }
 }

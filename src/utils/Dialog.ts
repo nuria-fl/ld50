@@ -1,7 +1,7 @@
 import { SceneWithDialog } from "./SceneWithDialog";
 
 export class DialogService {
-  public scene: Phaser.Scene;
+  public scene: SceneWithDialog;
   public timedEvent;
   public text: Phaser.GameObjects.Text;
   public config = {
@@ -167,25 +167,23 @@ export class DialogService {
       },
     });
   }
+
+  createDialogBox(text: string): Promise<void> {
+    return new Promise((resolve) => {
+      this.scene.dialog.init();
+      this.scene.dialog.setText(text);
+      const addListener = () => {
+        this.scene.input.keyboard.once("keydown", () => {
+          if (!this.scene.dialog.animating) {
+            this.scene.dialog.toggleWindow();
+            resolve();
+          } else {
+            addListener();
+          }
+        });
+      };
+      addListener();
+    });
+  }
 }
 
-export const createDialogBox = (
-  text: string,
-  scene: SceneWithDialog
-): Promise<void> => {
-  return new Promise((resolve) => {
-    scene.dialog.init();
-    scene.dialog.setText(text);
-    const addListener = () => {
-      scene.input.keyboard.once("keydown", () => {
-        if (!scene.dialog.animating) {
-          scene.dialog.toggleWindow();
-          resolve();
-        } else {
-          addListener();
-        }
-      });
-    };
-    addListener();
-  });
-};
