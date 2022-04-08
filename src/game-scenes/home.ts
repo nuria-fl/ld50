@@ -8,12 +8,15 @@ export class Home extends SceneWithDialog {
   public player: PlayerSprite;
   public stairs: Phaser.Physics.Arcade.StaticGroup;
   private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
+  private fx_door: any = null;
 
   constructor() {
     super("home");
   }
 
-  preload() { }
+  preload() {
+    this.load.audio("fx_door", ["assets/audio/fx_cross_door.mp3"]);
+  }
 
   async create() {
     this.dialog = new DialogService(this);
@@ -28,12 +31,16 @@ export class Home extends SceneWithDialog {
     this.cameras.main.startFollow(this.player, false);
 
     this.physics.add.collider(this.player, this.stairs, () => {
+      this.fx_door = this.sound.add("fx_door");
+      this.fx_door.play();
       this.scene.start("town");
     });
     await this.createDialogBox(
       "Oh no! My data shows that the climate change is reaching a point of no return. I need to fix this!"
     );
-    await this.createDialogBox("I need to shop for groceries, send a letter to the president");
+    await this.createDialogBox(
+      "I need to shop for groceries, send a letter to the president"
+    );
   }
 
   update() {
@@ -51,7 +58,9 @@ export class Home extends SceneWithDialog {
   }
 
   async createDialogBox(text: string) {
-    this.player.disableMovement()
-    return this.dialog.createDialogBox(text).then(() => this.player.enableMovement());
+    this.player.disableMovement();
+    return this.dialog
+      .createDialogBox(text)
+      .then(() => this.player.enableMovement());
   }
 }
