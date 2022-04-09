@@ -5,14 +5,21 @@ import { ToDoList } from "./ToDoList";
 export class BaseScene extends Phaser.Scene {
   dialog: DialogService;
   toDoList: ToDoList;
+  todos: {
+    id: string;
+    text: string;
+    done: boolean;
+  }[];
   player: PlayerSprite;
   enableControls = true;
   private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
-  
+
+  preload() {}
+
   create() {
     this.dialog = new DialogService(this);
-    this.player = new PlayerSprite(this, 0, 0);
-    this.toDoList = new ToDoList(this);
+    this.player = new PlayerSprite(this, 100, 100);
+    this.toDoList = new ToDoList(this, this.todos);
     this.cursors = this.input.keyboard.createCursorKeys();
 
     this.cameras.main.setBounds(0, 0, 10000, 10000);
@@ -23,7 +30,7 @@ export class BaseScene extends Phaser.Scene {
         ev.stopImmediatePropagation();
         if (!this.enableControls) return;
         ev.preventDefault();
-        this.toggleToDoList()
+        this.toggleToDoList();
       }
     });
   }
@@ -40,18 +47,19 @@ export class BaseScene extends Phaser.Scene {
     } else {
       this.player.moveStop();
     }
-    
   }
 
   async createDialogBox(text: string) {
-    this.player.disableMovement()
-    return this.dialog.createDialogBox(text).then(() => this.player.enableMovement());
+    this.player.disableMovement();
+    return this.dialog
+      .createDialogBox(text)
+      .then(() => this.player.enableMovement());
   }
 
   toggleToDoList() {
     if (!this.dialog.isVisible) {
-      this.player.toggleMovement()
-      return this.toDoList.toggle()
+      this.player.toggleMovement();
+      return this.toDoList.toggle();
     }
   }
 }

@@ -12,6 +12,18 @@ export default class Start extends Phaser.Scene {
       "assets/audio/bg_music_intro.mp3",
       "assets/audio/bg_music_intro.ogg",
     ]);
+    this.load.spritesheet([
+      {
+        key: "player_idle",
+        url: "./assets/sprites/scientist.png",
+        frameConfig: {
+          frameWidth: 25,
+          frameHeight: 30,
+          startFrame: 0,
+          endFrame: 0,
+        },
+      },
+    ]);
   }
 
   create() {

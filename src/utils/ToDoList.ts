@@ -4,22 +4,14 @@ export class ToDoList {
   isVisible = false;
   config = {
     width: 400,
-    height: 500
-  }
-  todos = [
-    {
-      id: "groceries",
-      text: "Buy groceries",
-      done: false
-    },
-    {
-      id: "letter",
-      text: "Send a letter to the president",
-      done: false
-    },
-  ]
+    height: 500,
+    padding: 20,
+  };
+  todos: any;
 
-  constructor(private readonly scene: Phaser.Scene) { }
+  constructor(private readonly scene: Phaser.Scene, todos: any[]) {
+    this.todos = todos;
+  }
 
   // Gets the width of the game (based on the scene)
   private getGameWidth() {
@@ -33,10 +25,10 @@ export class ToDoList {
 
   private createWindow() {
     this.graphics = this.scene.add.graphics();
-    const { x, y } = this.calculateWindowDimensions()
+    const { x, y } = this.calculateWindowDimensions();
     this.graphics.fillStyle(0xffffff);
     this.graphics.fillRect(x, y, this.config.width, this.config.height);
-    this.setDialogText()
+    this.setDialogText();
   }
 
   private setDialogText() {
@@ -47,10 +39,10 @@ export class ToDoList {
 
     const dimensions = this.calculateWindowDimensions();
 
-    const x = dimensions.x + 20;
-    const y = dimensions.y + 20;
+    const x = dimensions.x + this.config.padding;
+    const y = dimensions.y + this.config.padding;
 
-    const list = this.todos.map(todo => todo.text).join("\n\n")
+    const list = this.todos.map((todo) => todo.text).join("\n\n");
 
     this.text = this.scene.make.text({
       x,
@@ -60,15 +52,20 @@ export class ToDoList {
         fontFamily: "Courier New, monospace",
         fontSize: "24px",
         color: "#000",
-        wordWrap: { width: this.config.width },
+        wordWrap: { width: this.config.width - this.config.padding },
       },
     });
   }
 
   private calculateWindowDimensions() {
-    
-    const x = this.scene.cameras.main.scrollX + this.getGameWidth() / 2 - this.config.width / 2;
-    const y = this.scene.cameras.main.scrollY + this.getGameHeight() / 2 - this.config.height / 2 
+    const x =
+      this.scene.cameras.main.scrollX +
+      this.getGameWidth() / 2 -
+      this.config.width / 2;
+    const y =
+      this.scene.cameras.main.scrollY +
+      this.getGameHeight() / 2 -
+      this.config.height / 2;
 
     return {
       x,
@@ -76,15 +73,15 @@ export class ToDoList {
     };
   }
 
-  toggle(): void {  
-    this.isVisible = !this.isVisible  
+  toggle(): void {
+    this.isVisible = !this.isVisible;
 
     if (this.isVisible) {
       this.createWindow();
-      return
+      return;
     }
-    
-    this.graphics.destroy()
-    this.text.destroy()
+
+    this.graphics.destroy();
+    this.text.destroy();
   }
 }

@@ -5,7 +5,7 @@ import Start from "./start";
 
 const config = {
   type: Phaser.AUTO,
-  backgroundColor: "#125555",
+  backgroundColor: "#b4cdd6",
   width: 800,
   height: 600,
   scene: [Start, Home, Town],
