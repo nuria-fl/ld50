@@ -8,9 +8,9 @@ export default class Start extends Phaser.Scene {
 
   preload() {
     this.load.audio("bg_music_menu", [
-      "assets/audio/bg_music_intro.m4a",
-      "assets/audio/bg_music_intro.mp3",
-      "assets/audio/bg_music_intro.ogg",
+      "assets/audio/bg_music_intro8bit-ish.m4a",
+      "assets/audio/bg_music_intro8bit-ish.mp3",
+      "assets/audio/bg_music_intro8bit-ish.ogg",
     ]);
     this.load.spritesheet([
       {
@@ -30,7 +30,7 @@ export default class Start extends Phaser.Scene {
     this.music = this.sound.add("bg_music_menu");
     this.music.play({
       loop: true,
-      volume: 0.1,
+      volume: 0.5,
     });
 
     this.add
@@ -51,7 +51,7 @@ export default class Start extends Phaser.Scene {
           this.music.mute = false;
           this.music.play({
             loop: true,
-            volume: 0.1,
+            volume: 0.5,
           });
         } else {
           console.log("muted");
