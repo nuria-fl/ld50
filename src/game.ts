@@ -6,7 +6,7 @@ import GameOver from "./game-over";
 
 const config = {
   type: Phaser.AUTO,
-  backgroundColor: "#b4cdd6",
+  backgroundColor: "#D9F7CA",
   width: 800,
   height: 600,
   scene: [Start, Home, Town, GameOver],

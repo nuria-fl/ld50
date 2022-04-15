@@ -28,16 +28,16 @@ export default class Start extends Phaser.Scene {
 
   create() {
     this.music = this.sound.add("bg_music_menu");
-    // this.music.play({
-    //   loop: true,
-    //   volume: 0.5,
-    // });
+    this.music.play({
+      loop: true,
+      volume: 0.5,
+    });
 
     this.add
       .text(270, 270, "Start Game", {
         fontFamily: "Courier New",
         fontSize: "40px",
-        color: "#fff",
+        color: "#222",
       })
       .setInteractive({ useHandCursor: true })
       .on("pointerdown", () => {
@@ -67,6 +67,6 @@ export default class Start extends Phaser.Scene {
   }
 
   goToPlay() {
-    this.scene.start("town");
+    this.scene.start("home");
   }
 }

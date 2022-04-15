@@ -9,7 +9,7 @@ export class DialogService {
     borderColor: 0x101010,
     borderThickness: 3,
     windowAlpha: 0.8,
-    windowColor: 0x303030,
+    windowColor: 0x101010,
     windowHeight: 120,
     padding: 15,
     dialogSpeed: 4,
@@ -163,6 +163,7 @@ export class DialogService {
       style: {
         fontFamily: "Courier New, monospace",
         fontSize: "24px",
+        color: "#D9F7CA",
         wordWrap: { width: this.getGameWidth() - this.config.padding * 2 - 25 },
       },
     });

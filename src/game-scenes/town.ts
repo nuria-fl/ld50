@@ -14,7 +14,7 @@ export class Town extends BaseScene {
     },
     {
       id: "talk",
-      text: "Spread the word by talking to 5 neighbours",
+      text: "Spread the word by talking to 5 neighbours (0/5)",
       done: false,
     },
   ];
@@ -49,15 +49,23 @@ export class Town extends BaseScene {
 
     this.HUDmoney = this.add.text(710, 30, `💸 ${this.money}`, {
       padding: { y: 3 },
+      color: "#222",
     });
     this.HUDmoney.setScrollFactor(0, 0);
     this.HUDtime = this.add.text(630, 30, `⏰ ${this.timeLeft}`, {
       padding: { y: 3 },
+      color: "#222",
     });
     this.HUDtime.setScrollFactor(0, 0);
 
     this.setupGroceriesStore();
     this.setupPostalOffice();
+
+    this.setupNeighbourAbby();
+    this.setupNeighbourChloe();
+    this.setupNeighbourEllie();
+    this.setupNeighbourJoel();
+    this.setupNeighbourNate();
 
     await this.createDialogBox(
       "Lots to do before the stores close! I don't have much time. I could drive but that doesn't help the planet…"
@@ -128,6 +136,131 @@ export class Town extends BaseScene {
         this.closeInteractionBox();
       });
     });
+  }
+
+  setupNeighbourAbby() {
+    let talkedTo = false;
+    const neighbour = this.physics.add.staticImage(400, 800, "abby");
+
+    this.physics.add.collider(this.player, neighbour, async () => {
+      if (talkedTo) {
+        await this.createDialogBox("Have a nice day Abby!");
+        return;
+      }
+      await this.createDialogBox("Hi Abby! Do you have a minute?");
+      await this.createDialogBox("Abby: well I…");
+      await this.createDialogBox(
+        "Temperatures are reaching a point of no return. That means if we don't take action now, we won't be able to stop the climate change!"
+      );
+      await this.createDialogBox(
+        "Here's a leaflet with more information. Thanks for your help!"
+      );
+      await this.createDialogBox("Abby: uhmm ok");
+      this.talkToNeighbour();
+      talkedTo = true;
+    });
+  }
+
+  setupNeighbourChloe() {
+    let talkedTo = false;
+    const neighbour = this.physics.add.staticImage(1400, 1800, "chloe");
+
+    this.physics.add.collider(this.player, neighbour, async () => {
+      if (talkedTo) {
+        await this.createDialogBox("Enjoy your day Chloe!");
+        return;
+      }
+      await this.createDialogBox(
+        "Good evening Chloe! I have to tell you something."
+      );
+      await this.createDialogBox("Chloe: Yeah? What is it?");
+      await this.createDialogBox(
+        "As you may know I'm studying climate change. I've just found out that our actions are causing big trouble and we are reaching a point of no return. We must do something now!"
+      );
+      await this.createDialogBox(
+        "Here's a leaflet with more information. Thanks for your help!"
+      );
+      await this.createDialogBox("Chloe: Oh geez.");
+      this.talkToNeighbour();
+      talkedTo = true;
+    });
+  }
+
+  setupNeighbourJoel() {
+    let talkedTo = false;
+    const neighbour = this.physics.add.staticImage(800, 400, "joel");
+
+    this.physics.add.collider(this.player, neighbour, async () => {
+      if (talkedTo) {
+        await this.createDialogBox("See you around Joel!");
+        return;
+      }
+      await this.createDialogBox("Hi Joel! How are you doing?");
+      await this.createDialogBox("Joel: Peachy. You?");
+      await this.createDialogBox(
+        "Well, better than the planet. Did you know we are reaching a point of no return? We need to change our habits if we want to stop it."
+      );
+      await this.createDialogBox(
+        "Here's a leaflet with more information. Thanks for your help!"
+      );
+      await this.createDialogBox("Joel: Awesome.");
+      this.talkToNeighbour();
+      talkedTo = true;
+    });
+  }
+
+  setupNeighbourEllie() {
+    let talkedTo = false;
+    const neighbour = this.physics.add.staticImage(800, 800, "ellie");
+
+    this.physics.add.collider(this.player, neighbour, async () => {
+      if (talkedTo) {
+        await this.createDialogBox("See ya Ellie!");
+        return;
+      }
+      await this.createDialogBox("Ellie! Just who I wanted to see.");
+      await this.createDialogBox("Ellie: *looks at you suspiciously*");
+      await this.createDialogBox(
+        "I have some bad news. According to my calculations, climate change could kill us all if we don't take action now. But if we work together we can stop it!"
+      );
+      await this.createDialogBox(
+        "Here's a leaflet with more information. Thanks for your help!"
+      );
+      await this.createDialogBox("Ellie: *blank stare*");
+      this.talkToNeighbour();
+      talkedTo = true;
+    });
+  }
+
+  setupNeighbourNate() {
+    let talkedTo = false;
+    const neighbour = this.physics.add.staticImage(1000, 1200, "nate");
+
+    this.physics.add.collider(this.player, neighbour, async () => {
+      if (talkedTo) {
+        await this.createDialogBox("Have a nice day Nate!");
+        return;
+      }
+      await this.createDialogBox("Hey Nate!");
+      await this.createDialogBox("Nate: Hello! How are you?");
+      await this.createDialogBox(
+        "Well… I've been running some calculations and I've found out that we are reaching a point of no return. If we keep going like this, temperatures will become unbearable. But we can stop it!"
+      );
+      await this.createDialogBox(
+        "Here's a leaflet with more information. Thanks for your help!"
+      );
+      await this.createDialogBox("Nate: …yeah I'm doing great too.");
+      this.talkToNeighbour();
+      talkedTo = true;
+    });
+  }
+
+  talkToNeighbour() {
+    this.neighboursTalkedTo++;
+    this.todos[2].text = `Spread the word by talking to 5 neighbours (${this.neighboursTalkedTo}/5)`;
+    if (this.neighboursTalkedTo === 5) {
+      this.todos[2].done;
+    }
   }
 
   decreaseMoney(amount: number) {

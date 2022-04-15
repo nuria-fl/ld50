@@ -10,7 +10,7 @@ export default class GameOver extends Phaser.Scene {
       .text(270, 270, "Game Over", {
         fontFamily: "Courier New",
         fontSize: "40px",
-        color: "#fff",
+        color: "#222",
       })
       .setInteractive({ useHandCursor: true })
       .on("pointerdown", () => {

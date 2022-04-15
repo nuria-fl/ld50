@@ -9,9 +9,15 @@ export class Home extends BaseScene {
       text: "Write a letter to the president",
       done: false,
     },
+    {
+      id: "leaflets",
+      text: "Pick up leaflets",
+      done: false,
+    },
   ];
   private door: Phaser.Physics.Arcade.StaticGroup;
   private table: Phaser.Physics.Arcade.Image;
+  private leaflets: Phaser.Physics.Arcade.Image;
   private fx_door: any = null;
 
   constructor() {
@@ -30,11 +36,12 @@ export class Home extends BaseScene {
     this.door.create(500, 500);
     this.table = this.physics.add.staticImage(300, 200, "table");
     this.table.setScale(2, 2);
+    this.leaflets = this.physics.add.staticImage(200, 500, "leaflets");
 
     this.physics.add.collider(this.player, this.door, async () => {
-      if (!this.todos[0].done) {
+      if (!this.areTodosCompleted()) {
         await this.createDialogBox(
-          "I must write the letter before heading to town!"
+          "I must complete my todo list before heading to town!"
         );
         return;
       }
@@ -51,6 +58,17 @@ export class Home extends BaseScene {
       }
     });
 
+    this.physics.add.collider(this.player, this.leaflets, async () => {
+      if (!this.todos[1].done) {
+        this.player.disableMovement();
+        await this.createDialogBox(
+          "Ok, I can hand out this leaflets to the neighbours."
+        );
+        this.todos[1].done = true;
+        this.player.enableMovement();
+      }
+    });
+
     await this.createDialogBox(
       "Oh no! My data shows that the climate change is reaching the point of no return."
     );
@@ -61,5 +79,14 @@ export class Home extends BaseScene {
 
   update(time: number, delta: number) {
     super.update(time, delta);
+  }
+
+  areTodosCompleted() {
+    for (const todo of this.todos) {
+      if (!todo.done) {
+        return false;
+      }
+    }
+    return true;
   }
 }
