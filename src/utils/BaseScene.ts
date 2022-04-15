@@ -35,7 +35,7 @@ export class BaseScene extends Phaser.Scene {
     });
   }
 
-  update(): void {
+  update(time: number, delta: number): void {
     if (this.cursors.left.isDown) {
       this.player.moveLeft();
     } else if (this.cursors.right.isDown) {
@@ -54,6 +54,16 @@ export class BaseScene extends Phaser.Scene {
     return this.dialog
       .createDialogBox(text)
       .then(() => this.player.enableMovement());
+  }
+
+  async createInteractionBox(text: string) {
+    this.player.disableMovement();
+    return this.dialog.createDialogBox(text, false);
+  }
+
+  closeInteractionBox() {
+    this.dialog.toggleWindow();
+    this.player.enableMovement();
   }
 
   toggleToDoList() {

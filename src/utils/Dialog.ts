@@ -168,10 +168,15 @@ export class DialogService {
     });
   }
 
-  createDialogBox(text: string): Promise<void> {
+  createDialogBox(text: string, closeOnKeydown = true): Promise<void> {
     return new Promise((resolve) => {
       this.init();
       this.setText(text);
+      if (!closeOnKeydown) {
+        resolve();
+        return;
+      }
+
       const addListener = () => {
         this.scene.input.keyboard.once("keydown", () => {
           if (!this.animating) {

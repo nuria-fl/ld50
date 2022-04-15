@@ -59,7 +59,7 @@ export class Home extends BaseScene {
     );
   }
 
-  update() {
-    super.update();
+  update(time: number, delta: number) {
+    super.update(time, delta);
   }
 }

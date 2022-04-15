@@ -28,10 +28,10 @@ export default class Start extends Phaser.Scene {
 
   create() {
     this.music = this.sound.add("bg_music_menu");
-    this.music.play({
-      loop: true,
-      volume: 0.5,
-    });
+    // this.music.play({
+    //   loop: true,
+    //   volume: 0.5,
+    // });
 
     this.add
       .text(270, 270, "Start Game", {
@@ -47,14 +47,12 @@ export default class Start extends Phaser.Scene {
     this.input.keyboard.on("keydown", (event: KeyboardEvent) => {
       if (event.key == "m") {
         if (this.is_muted) {
-          console.log("unmuted");
           this.music.mute = false;
           this.music.play({
             loop: true,
             volume: 0.5,
           });
         } else {
-          console.log("muted");
           this.music.mute = true;
           this.music.volume = 0;
         }
@@ -69,6 +67,6 @@ export default class Start extends Phaser.Scene {
   }
 
   goToPlay() {
-    this.scene.start("home");
+    this.scene.start("town");
   }
 }
