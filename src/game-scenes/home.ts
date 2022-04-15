@@ -15,7 +15,7 @@ export class Home extends BaseScene {
       done: false,
     },
   ];
-  private door: Phaser.Physics.Arcade.StaticGroup;
+  private door: Phaser.Physics.Arcade.Image;
   private table: Phaser.Physics.Arcade.Image;
   private leaflets: Phaser.Physics.Arcade.Image;
   private fx_door: any = null;
@@ -27,15 +27,14 @@ export class Home extends BaseScene {
   preload() {
     this.load.audio("fx_door", ["assets/audio/fx_cross_door.mp3"]);
     this.load.image("table", "assets/sprites/table.png");
+    this.load.image("door", "assets/sprites/door.png");
   }
 
   async create() {
     super.create();
 
-    this.door = this.physics.add.staticGroup();
-    this.door.create(500, 500);
+    this.door = this.physics.add.staticImage(499, 500, "door");
     this.table = this.physics.add.staticImage(300, 200, "table");
-    this.table.setScale(2, 2);
     this.leaflets = this.physics.add.staticImage(200, 500, "leaflets");
 
     this.physics.add.collider(this.player, this.door, async () => {

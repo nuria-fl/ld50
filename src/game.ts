@@ -10,6 +10,10 @@ const config = {
   width: 800,
   height: 600,
   scene: [Start, Home, Town, GameOver],
+  pixelArt: true,
+  antialias: false,
+  autoRound: true,
+  roundPixels: true,
   physics: {
     default: "arcade",
     arcade: { debug: false },

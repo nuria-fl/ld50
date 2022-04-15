@@ -11,3 +11,6 @@ node_modules/
 dist
 
 .yarn
+
+# art source files
+art/

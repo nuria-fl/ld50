@@ -17,8 +17,8 @@ export default class Start extends Phaser.Scene {
         key: "player_idle",
         url: "./assets/sprites/scientist.png",
         frameConfig: {
-          frameWidth: 25,
-          frameHeight: 30,
+          frameWidth: 32,
+          frameHeight: 42,
           startFrame: 0,
           endFrame: 0,
         },

@@ -11,7 +11,6 @@ export class PlayerSprite extends Phaser.Physics.Arcade.Sprite {
     this.scene.add.existing(this);
 
     (this.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
-    this.setScale(2, 2);
 
     this.moveSpeed = MOVE_SPEED;
     this.play("idle");
@@ -20,7 +19,7 @@ export class PlayerSprite extends Phaser.Physics.Arcade.Sprite {
   public moveLeft(): void {
     if (this.canMove) {
       this.setVelocityX(-this.moveSpeed);
-      this.flipX = false;
+      this.flipX = true;
 
       this.play("walk", true);
     }
@@ -29,7 +28,7 @@ export class PlayerSprite extends Phaser.Physics.Arcade.Sprite {
   public moveRight(): void {
     if (this.canMove) {
       this.setVelocityX(this.moveSpeed);
-      this.flipX = true;
+      this.flipX = false;
 
       this.play("walk", true);
     }
