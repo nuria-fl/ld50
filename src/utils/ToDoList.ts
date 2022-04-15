@@ -42,7 +42,9 @@ export class ToDoList {
     const x = dimensions.x + this.config.padding;
     const y = dimensions.y + this.config.padding;
 
-    const list = this.todos.map((todo) => todo.text).join("\n\n");
+    const list = this.todos
+      .map((todo) => `${todo.done ? "☑️" : " "} ${todo.text}`)
+      .join("\n\n");
 
     this.text = this.scene.make.text({
       x,
@@ -52,6 +54,7 @@ export class ToDoList {
         fontFamily: "Courier New, monospace",
         fontSize: "24px",
         color: "#000",
+        padding: { y: 5 },
         wordWrap: { width: this.config.width - this.config.padding },
       },
     });
