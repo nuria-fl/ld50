@@ -26,7 +26,7 @@ export class ToDoList {
   private createWindow() {
     this.graphics = this.scene.add.graphics();
     const { x, y } = this.calculateWindowDimensions();
-    this.graphics.fillStyle(0xffffff);
+    this.graphics.fillStyle(0xd9f7ca);
     this.graphics.fillRect(x, y, this.config.width, this.config.height);
     this.setDialogText();
   }

@@ -18,7 +18,7 @@ export class BaseScene extends Phaser.Scene {
 
   create() {
     this.dialog = new DialogService(this);
-    this.player = new PlayerSprite(this, 100, 100);
+    this.player = new PlayerSprite(this, 350, 200);
     this.toDoList = new ToDoList(this, this.todos);
     this.cursors = this.input.keyboard.createCursorKeys();
 
