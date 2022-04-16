@@ -72,4 +72,13 @@ export class BaseScene extends Phaser.Scene {
       return this.toDoList.toggle();
     }
   }
+
+  areTodosCompleted() {
+    for (const todo of this.todos) {
+      if (!todo.done) {
+        return false;
+      }
+    }
+    return true;
+  }
 }

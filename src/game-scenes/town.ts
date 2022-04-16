@@ -8,7 +8,7 @@ export class Town extends BaseScene {
       done: false,
     },
     {
-      id: "send-letter",
+      id: "sendLetter",
       text: "Send a letter to the president",
       done: false,
     },
@@ -88,6 +88,10 @@ export class Town extends BaseScene {
     super.update(time, delta);
     this.timeLeft -= delta;
     this.updateTime();
+
+    if (this.areTodosCompleted()) {
+      this.gameOver();
+    }
   }
 
   setupGroceriesStore() {
@@ -336,7 +340,14 @@ export class Town extends BaseScene {
     this.HUDtime.updateText();
 
     if (this.timeLeft <= 0) {
-      this.scene.start("game-over");
+      this.gameOver();
     }
+  }
+
+  gameOver() {
+    this.scene.start("game-over", {
+      todos: this.todos,
+      groceriesChosenOption: this.groceriesChosenOption,
+    });
   }
 }
