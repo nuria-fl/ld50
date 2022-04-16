@@ -161,8 +161,8 @@ export class DialogService {
       y,
       text,
       style: {
-        fontFamily: "Courier New, monospace",
-        fontSize: "24px",
+        fontFamily: "VT323, monospace",
+        fontSize: "28px",
         color: "#D9F7CA",
         wordWrap: { width: this.getGameWidth() - this.config.padding * 2 - 25 },
       },

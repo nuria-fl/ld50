@@ -88,21 +88,12 @@ export class Home extends BaseScene {
       "Oh no! My data shows that the climate change is reaching the point of no return."
     );
     await this.createDialogBox(
-      "I must prevent this! I can view the list of things I need to do by pressing the T key."
+      "I must prevent this! I can move around with the cursor keys and view the list of things I need to do by pressing T."
     );
   }
 
   update(time: number, delta: number) {
     super.update(time, delta);
-  }
-
-  areTodosCompleted() {
-    for (const todo of this.todos) {
-      if (!todo.done) {
-        return false;
-      }
-    }
-    return true;
   }
 
   createHouse() {

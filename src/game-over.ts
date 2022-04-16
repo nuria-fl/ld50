@@ -57,7 +57,7 @@ export default class GameOver extends Phaser.Scene {
       color: "#222",
     });
     this.add.text(100, 290, text, {
-      fontFamily: "Courier New, monospace",
+      fontFamily: "VT323, monospace",
       fontSize: "24px",
       align: "center",
       color: "#000",

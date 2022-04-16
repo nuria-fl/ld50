@@ -53,8 +53,8 @@ export class ToDoList {
       y,
       text: list,
       style: {
-        fontFamily: "Courier New, monospace",
-        fontSize: "24px",
+        fontFamily: "VT323, monospace",
+        fontSize: "28px",
         color: "#000",
         padding: { y: 5 },
         wordWrap: { width: this.config.width - this.config.padding },

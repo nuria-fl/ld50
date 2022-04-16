@@ -44,12 +44,14 @@ export class Town extends BaseScene {
     super.create();
     this.cameras.main.setBounds(0, 0, 2432, 1856);
     this.HUDmoney = this.add.text(710, 30, `💸 ${this.money}`, {
+      fontFamily: "VT323, monospace",
       padding: { y: 3 },
       color: "#222",
     });
     this.HUDmoney.setScrollFactor(0, 0);
     this.HUDmoney.setDepth(100);
     this.HUDtime = this.add.text(630, 30, `⏰ ${this.timeLeft}`, {
+      fontFamily: "VT323, monospace",
       padding: { y: 3 },
       color: "#222",
     });

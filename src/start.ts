@@ -7,6 +7,8 @@ export default class Start extends Phaser.Scene {
   }
 
   preload() {
+    this.load.image("cover", "assets/cover.png");
+    this.load.image("start", "assets/start.png");
     this.load.audio("bg_music_menu", [
       "assets/audio/bg_music_intro8bit-ish.m4a",
       "assets/audio/bg_music_intro8bit-ish.mp3",
@@ -27,6 +29,7 @@ export default class Start extends Phaser.Scene {
   }
 
   create() {
+    this.add.image(400, 300, "cover");
     this.music = this.sound.add("bg_music_menu");
     this.music.play({
       loop: true,
@@ -34,11 +37,7 @@ export default class Start extends Phaser.Scene {
     });
 
     this.add
-      .text(270, 270, "Start Game", {
-        fontFamily: "Courier New",
-        fontSize: "40px",
-        color: "#222",
-      })
+      .image(400, 420, "start")
       .setInteractive({ useHandCursor: true })
       .on("pointerdown", () => {
         this.goToPlay();
