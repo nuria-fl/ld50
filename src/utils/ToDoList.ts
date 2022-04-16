@@ -27,7 +27,9 @@ export class ToDoList {
     this.graphics = this.scene.add.graphics();
     const { x, y } = this.calculateWindowDimensions();
     this.graphics.fillStyle(0xd9f7ca);
+    this.graphics.defaultStrokeColor = 0x222222;
     this.graphics.fillRect(x, y, this.config.width, this.config.height);
+    this.graphics.strokeRect(x, y, this.config.width, this.config.height);
     this.setDialogText();
   }
 

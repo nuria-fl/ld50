@@ -1,4 +1,4 @@
-const MOVE_SPEED = 250;
+const MOVE_SPEED = 150;
 
 export class PlayerSprite extends Phaser.Physics.Arcade.Sprite {
   private moveSpeed: number;

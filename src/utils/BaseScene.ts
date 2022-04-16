@@ -22,7 +22,7 @@ export class BaseScene extends Phaser.Scene {
     this.toDoList = new ToDoList(this, this.todos);
     this.cursors = this.input.keyboard.createCursorKeys();
 
-    this.cameras.main.setBounds(0, 0, 10000, 10000);
+    this.cameras.main.setBounds(0, 0, 800, 600);
     this.cameras.main.startFollow(this.player, false);
 
     this.input.keyboard.on("keydown", (ev: KeyboardEvent) => {

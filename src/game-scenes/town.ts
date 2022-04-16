@@ -17,13 +17,16 @@ export class Town extends BaseScene {
       text: "Spread the word by talking to 5 neighbours (0/5)",
       done: false,
     },
+    {
+      id: "garden",
+      text: "Buy supplies to grow a self-consumption garden",
+      done: false,
+    },
   ];
-  groceriesStore: any;
-  postalOffice: any;
   groceriesChosenOption: string;
   HUDmoney: Phaser.GameObjects.Text;
   HUDtime: Phaser.GameObjects.Text;
-  timeLeft = 3 * 59 * 1000;
+  timeLeft = 2 * 59 * 1000;
   neighboursTalkedTo = 0;
   money = 100;
 
@@ -32,12 +35,27 @@ export class Town extends BaseScene {
   }
 
   preload() {
-    this.load.image("tiles", "/assets/tilemaps/floor.png");
+    this.load.image("transparent", "/assets/sprites/transparent.png");
+    this.load.image("tiles", "/assets/tilemaps/town.png");
     this.load.tilemapTiledJSON("map", "/assets/tilemaps/town.json");
   }
 
   async create() {
     super.create();
+    this.cameras.main.setBounds(0, 0, 2432, 1856);
+    this.HUDmoney = this.add.text(710, 30, `💸 ${this.money}`, {
+      padding: { y: 3 },
+      color: "#222",
+    });
+    this.HUDmoney.setScrollFactor(0, 0);
+    this.HUDmoney.setDepth(100);
+    this.HUDtime = this.add.text(630, 30, `⏰ ${this.timeLeft}`, {
+      padding: { y: 3 },
+      color: "#222",
+    });
+    this.HUDtime.setScrollFactor(0, 0);
+    this.HUDtime.setDepth(100);
+
     const map = this.make.tilemap({
       key: "map",
       tileWidth: 32,
@@ -45,27 +63,21 @@ export class Town extends BaseScene {
     });
     const tileset = map.addTilesetImage("town", "tiles");
     const layer = map.createLayer("ground", tileset, 0, 0);
+    const buildings = map.createLayer("buildings", tileset, 0, 0);
+    buildings.setCollisionByExclusion([-1], true);
     layer.setDepth(-1);
-
-    this.HUDmoney = this.add.text(710, 30, `💸 ${this.money}`, {
-      padding: { y: 3 },
-      color: "#222",
-    });
-    this.HUDmoney.setScrollFactor(0, 0);
-    this.HUDtime = this.add.text(630, 30, `⏰ ${this.timeLeft}`, {
-      padding: { y: 3 },
-      color: "#222",
-    });
-    this.HUDtime.setScrollFactor(0, 0);
 
     this.setupGroceriesStore();
     this.setupPostalOffice();
+    this.setupGardenCenter();
 
     this.setupNeighbourAbby();
     this.setupNeighbourChloe();
     this.setupNeighbourEllie();
     this.setupNeighbourJoel();
     this.setupNeighbourNate();
+
+    this.physics.add.collider(this.player, buildings);
 
     await this.createDialogBox(
       "Lots to do before the stores close! I don't have much time. I could drive but that doesn't help the planet…"
@@ -85,13 +97,14 @@ export class Town extends BaseScene {
       3: 50,
     };
 
-    this.groceriesStore = this.physics.add.staticImage(
-      300,
-      500,
-      "groceriesStore"
+    const groceriesStore = this.physics.add.staticImage(
+      1184,
+      1438,
+      "transparent"
     );
+    groceriesStore.setBodySize(64, 64);
 
-    this.physics.add.collider(this.player, this.groceriesStore, async () => {
+    this.physics.add.collider(this.player, groceriesStore, async () => {
       if (this.todos[0].done) {
         await this.createDialogBox("I already have my groceries");
         return;
@@ -102,6 +115,10 @@ export class Town extends BaseScene {
       this.input.keyboard.once("keydown", async (ev: KeyboardEvent) => {
         const key = ev.key;
         if (key === "1" || key === "2" || key === "3") {
+          if (!this.hasEnoughMoney(options[key])) {
+            this.closeInteractionBox();
+            return await this.createDialogBox("I don't have enough money!");
+          }
           this.decreaseMoney(options[key]);
           this.groceriesChosenOption = key;
           this.todos[0].done = true;
@@ -114,9 +131,10 @@ export class Town extends BaseScene {
   }
 
   setupPostalOffice() {
-    this.postalOffice = this.physics.add.staticImage(600, 300, "postalOffice");
+    const postalOffice = this.physics.add.staticImage(1632, 544, "transparent");
+    postalOffice.setBodySize(64, 64);
 
-    this.physics.add.collider(this.player, this.postalOffice, async () => {
+    this.physics.add.collider(this.player, postalOffice, async () => {
       if (this.todos[1].done) {
         await this.createDialogBox("I already sent the letter");
         return;
@@ -128,6 +146,10 @@ export class Town extends BaseScene {
         const key = ev.key.toLowerCase();
 
         if (key === "y") {
+          if (!this.hasEnoughMoney(10)) {
+            this.closeInteractionBox();
+            return await this.createDialogBox("I don't have enough money!");
+          }
           this.decreaseMoney(10);
           this.todos[1].done = true;
           this.closeInteractionBox();
@@ -138,9 +160,41 @@ export class Town extends BaseScene {
     });
   }
 
+  setupGardenCenter() {
+    const gardenCenter = this.physics.add.staticImage(2240, 288, "transparent");
+    gardenCenter.setBodySize(64, 64);
+
+    this.physics.add.collider(this.player, gardenCenter, async () => {
+      if (this.todos[3].done) {
+        await this.createDialogBox(
+          "I already have everything I need to grow my garden"
+        );
+        return;
+      }
+      await this.createInteractionBox(
+        `Buy supplies to grow a self-consumption garden? It's $60 (Press Y to confirm)`
+      );
+      this.input.keyboard.once("keydown", async (ev: KeyboardEvent) => {
+        const key = ev.key.toLowerCase();
+
+        if (key === "y") {
+          if (!this.hasEnoughMoney(60)) {
+            this.closeInteractionBox();
+            return await this.createDialogBox("I don't have enough money!");
+          }
+          this.decreaseMoney(60);
+          this.todos[3].done = true;
+          this.closeInteractionBox();
+          return;
+        }
+        this.closeInteractionBox();
+      });
+    });
+  }
+
   setupNeighbourAbby() {
     let talkedTo = false;
-    const neighbour = this.physics.add.staticImage(400, 800, "abby");
+    const neighbour = this.physics.add.staticImage(1152, 448, "abby");
 
     this.physics.add.collider(this.player, neighbour, async () => {
       if (talkedTo) {
@@ -163,7 +217,7 @@ export class Town extends BaseScene {
 
   setupNeighbourChloe() {
     let talkedTo = false;
-    const neighbour = this.physics.add.staticImage(1400, 1800, "chloe");
+    const neighbour = this.physics.add.staticImage(288, 1248, "chloe");
 
     this.physics.add.collider(this.player, neighbour, async () => {
       if (talkedTo) {
@@ -211,7 +265,7 @@ export class Town extends BaseScene {
 
   setupNeighbourEllie() {
     let talkedTo = false;
-    const neighbour = this.physics.add.staticImage(800, 800, "ellie");
+    const neighbour = this.physics.add.staticImage(1888, 1184, "ellie");
 
     this.physics.add.collider(this.player, neighbour, async () => {
       if (talkedTo) {
@@ -234,7 +288,7 @@ export class Town extends BaseScene {
 
   setupNeighbourNate() {
     let talkedTo = false;
-    const neighbour = this.physics.add.staticImage(1000, 1200, "nate");
+    const neighbour = this.physics.add.staticImage(2336, 1760, "nate");
 
     this.physics.add.collider(this.player, neighbour, async () => {
       if (talkedTo) {
@@ -259,8 +313,12 @@ export class Town extends BaseScene {
     this.neighboursTalkedTo++;
     this.todos[2].text = `Spread the word by talking to 5 neighbours (${this.neighboursTalkedTo}/5)`;
     if (this.neighboursTalkedTo === 5) {
-      this.todos[2].done;
+      this.todos[2].done = true;
     }
+  }
+
+  hasEnoughMoney(amount: number) {
+    return this.money - amount >= 0;
   }
 
   decreaseMoney(amount: number) {
