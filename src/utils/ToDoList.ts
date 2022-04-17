@@ -45,7 +45,7 @@ export class ToDoList {
     const y = dimensions.y + this.config.padding;
 
     const list = this.todos
-      .map((todo) => `${todo.done ? "☑️" : " "} ${todo.text}`)
+      .map((todo) => `${todo.done ? "✔️" : " "} ${todo.text}`)
       .join("\n\n");
 
     this.text = this.scene.make.text({
