@@ -50,26 +50,24 @@ export default class GameOver extends Phaser.Scene {
         -1)} years later than expected.`;
     }
 
-    this.add.text(291, 250, "Game Over", {
-      fontFamily: "Courier New",
-      fontSize: "40px",
-      fontStyle: "bold",
-      color: "#222",
-    });
-    this.add.text(100, 290, text, {
+    this.add.text(303, 210, "Game Over", {
       fontFamily: "VT323, monospace",
-      fontSize: "24px",
+      fontSize: "50px",
+      color: "#d9f7ca",
+    });
+    this.add.text(100, 280, text, {
+      fontFamily: "VT323, monospace",
+      fontSize: "28px",
       align: "center",
-      color: "#000",
+      color: "#d9f7ca",
       padding: { y: 5 },
       wordWrap: { width: 600 },
     });
     this.add
-      .text(310, 400, "Try again?", {
-        fontFamily: "Courier New",
-        fontSize: "30px",
-        fontStyle: "bold",
-        color: "#222",
+      .text(320, 390, "Try again?", {
+        fontFamily: "VT323, monospace",
+        fontSize: "35px",
+        color: "#d9f7ca",
       })
       .setInteractive({ useHandCursor: true })
       .on("pointerdown", () => {
