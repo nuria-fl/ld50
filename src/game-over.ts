@@ -23,7 +23,7 @@ export default class GameOver extends Phaser.Scene {
 
   preload() {}
 
-  create({ todos, groceriesChosenOption }) {
+  create({ todos, groceriesChosenOption, hasDrivenCar }) {
     this.todos = todos;
     this.groceriesChosenOption = todos;
     this.years = this.todos.reduce((acc: number, todo) => {
@@ -38,6 +38,10 @@ export default class GameOver extends Phaser.Scene {
       acc += this.yearsByTodo[todo.id];
       return acc;
     }, 0);
+
+    if (hasDrivenCar) {
+      this.years += 5;
+    }
 
     let text: string;
     if (this.years === 0) {

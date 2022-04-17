@@ -1,3 +1,4 @@
+import { CarSprite } from "../sprites/car";
 import { BaseScene } from "../utils/BaseScene";
 
 export class Town extends BaseScene {
@@ -26,6 +27,9 @@ export class Town extends BaseScene {
   groceriesChosenOption: string;
   HUDmoney: Phaser.GameObjects.Text;
   HUDtime: Phaser.GameObjects.Text;
+  car: CarSprite;
+  isInCar = false;
+  hasDrivenCar = false;
   timeLeft = 2 * 59 * 1000;
   neighboursTalkedTo = 0;
   money = 100;
@@ -43,10 +47,16 @@ export class Town extends BaseScene {
     this.load.image("nate", "/assets/sprites/nate.png");
     this.load.image("tiles", "/assets/tilemaps/town.png");
     this.load.tilemapTiledJSON("map", "/assets/tilemaps/town.json");
+
+    this.load.spritesheet("car", "./assets/sprites/car.png", {
+      frameWidth: 74,
+      frameHeight: 36,
+    });
   }
 
   async create() {
     super.create();
+    this.car = new CarSprite(this, 200, 200);
     this.cameras.main.setBounds(0, 0, 2432, 1856);
     const HUDbg = this.add.graphics({
       fillStyle: {
@@ -95,7 +105,52 @@ export class Town extends BaseScene {
     this.setupNeighbourJoel();
     this.setupNeighbourNate();
 
+    this.physics.add.collider(this.player, this.car, async () => {
+      if (this.isInCar) return;
+      this.player.setDepth(-2);
+      this.player.disableMovement();
+      this.isInCar = true;
+      this.cameras.main.startFollow(this.car);
+      // await this.createDialogBox("Press X to get out of the car");
+      // this.player.disableMovement();
+      const textBg = this.add.graphics({
+        fillStyle: {
+          color: 0x222222,
+        },
+      });
+      textBg.fillRect(0, 565, 800, 35);
+      textBg.setScrollFactor(0, 0);
+      textBg.setDepth(100);
+
+      const text = this.add.text(255, 565, `Press X to leave the car`, {
+        fontFamily: "VT323, monospace",
+        fontSize: "30px",
+        padding: { y: 2 },
+        color: "#d9f7ca",
+      });
+      text.setScrollFactor(0, 0);
+      text.setDepth(100);
+
+      const listener = this.input.keyboard.on(
+        "keydown",
+        (ev: KeyboardEvent) => {
+          if (ev.key.toLowerCase() === "x") {
+            text.destroy();
+            textBg.destroy();
+            this.isInCar = false;
+
+            this.player.setX(this.car.x);
+            this.player.setY(this.car.y + 50);
+            this.player.enableMovement();
+            this.player.setDepth(0);
+            this.cameras.main.startFollow(this.player);
+            listener.removeListener("keydown");
+          }
+        }
+      );
+    });
     this.physics.add.collider(this.player, buildings);
+    this.physics.add.collider(this.car, buildings);
 
     await this.createDialogBox(
       "Lots to do before the stores close! I don't have much time. I could drive but that doesn't help the planet…"
@@ -106,6 +161,24 @@ export class Town extends BaseScene {
     super.update(time, delta);
     this.timeLeft -= delta;
     this.updateTime();
+
+    if (this.isInCar) {
+      if (this.cursors.left.isDown) {
+        this.car.moveLeft();
+        this.hasDrivenCar = true;
+      } else if (this.cursors.right.isDown) {
+        this.car.moveRight();
+        this.hasDrivenCar = true;
+      } else if (this.cursors.up.isDown) {
+        this.car.moveUp();
+        this.hasDrivenCar = true;
+      } else if (this.cursors.down.isDown) {
+        this.car.moveDown();
+        this.hasDrivenCar = true;
+      } else {
+        this.car.moveStop();
+      }
+    }
 
     if (this.areTodosCompleted()) {
       this.gameOver();
@@ -218,6 +291,7 @@ export class Town extends BaseScene {
     let talkedTo = false;
     const neighbour = this.physics.add.staticImage(1152, 448, "abby");
 
+    this.physics.add.collider(this.car, neighbour);
     this.physics.add.collider(this.player, neighbour, async () => {
       if (talkedTo) {
         await this.createDialogBox("Have a nice day Abby!");
@@ -241,6 +315,7 @@ export class Town extends BaseScene {
     let talkedTo = false;
     const neighbour = this.physics.add.staticImage(288, 1248, "chloe");
 
+    this.physics.add.collider(this.car, neighbour);
     this.physics.add.collider(this.player, neighbour, async () => {
       if (talkedTo) {
         await this.createDialogBox("Enjoy your day Chloe!");
@@ -266,6 +341,7 @@ export class Town extends BaseScene {
     let talkedTo = false;
     const neighbour = this.physics.add.staticImage(800, 400, "joel");
 
+    this.physics.add.collider(this.car, neighbour);
     this.physics.add.collider(this.player, neighbour, async () => {
       if (talkedTo) {
         await this.createDialogBox("See you around Joel!");
@@ -289,6 +365,7 @@ export class Town extends BaseScene {
     let talkedTo = false;
     const neighbour = this.physics.add.staticImage(1888, 1184, "ellie");
 
+    this.physics.add.collider(this.car, neighbour);
     this.physics.add.collider(this.player, neighbour, async () => {
       if (talkedTo) {
         await this.createDialogBox("See ya Ellie!");
@@ -313,6 +390,7 @@ export class Town extends BaseScene {
     const neighbour = this.physics.add.staticImage(2336, 1760, "nate");
     neighbour.setFlipX(true);
 
+    this.physics.add.collider(this.car, neighbour);
     this.physics.add.collider(this.player, neighbour, async () => {
       if (talkedTo) {
         await this.createDialogBox("Have a nice day Nate!");
@@ -367,6 +445,7 @@ export class Town extends BaseScene {
     this.scene.start("game-over", {
       todos: this.todos,
       groceriesChosenOption: this.groceriesChosenOption,
+      hasDrivenCar: this.hasDrivenCar,
     });
   }
 }

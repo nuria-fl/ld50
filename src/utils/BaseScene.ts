@@ -12,7 +12,7 @@ export class BaseScene extends Phaser.Scene {
   }[];
   player: PlayerSprite;
   enableControls = true;
-  private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
+  cursors: Phaser.Types.Input.Keyboard.CursorKeys;
 
   preload() {}
 
@@ -36,6 +36,7 @@ export class BaseScene extends Phaser.Scene {
   }
 
   update(time: number, delta: number): void {
+    if (!this.player) return;
     if (this.cursors.left.isDown) {
       this.player.moveLeft();
     } else if (this.cursors.right.isDown) {

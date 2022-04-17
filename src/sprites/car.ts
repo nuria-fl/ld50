@@ -1,11 +1,11 @@
-const MOVE_SPEED = 150;
+const MOVE_SPEED = 350;
 
-export class PlayerSprite extends Phaser.Physics.Arcade.Sprite {
+export class CarSprite extends Phaser.Physics.Arcade.Sprite {
   private moveSpeed: number;
   private canMove = true;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
-    super(scene, x, y, "player_idle");
+    super(scene, x, y, "car");
 
     this.scene.physics.world.enable(this);
     this.scene.add.existing(this);
@@ -13,12 +13,15 @@ export class PlayerSprite extends Phaser.Physics.Arcade.Sprite {
     (this.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
 
     this.moveSpeed = MOVE_SPEED;
+    this.setFrame(0);
   }
 
   public moveLeft(): void {
     if (this.canMove) {
       this.setVelocityX(-this.moveSpeed);
       this.flipX = true;
+
+      this.setFrame(0);
     }
   }
 
@@ -26,13 +29,17 @@ export class PlayerSprite extends Phaser.Physics.Arcade.Sprite {
     if (this.canMove) {
       this.setVelocityX(this.moveSpeed);
       this.flipX = false;
+
+      this.setFrame(0);
     }
   }
 
   public moveUp(): void {
     if (this.canMove) {
       this.setVelocityY(-this.moveSpeed);
-      this.flipX = true;
+      this.flipX = false;
+
+      this.setFrame(1);
     }
   }
 
@@ -40,6 +47,8 @@ export class PlayerSprite extends Phaser.Physics.Arcade.Sprite {
     if (this.canMove) {
       this.setVelocityY(this.moveSpeed);
       this.flipX = false;
+
+      this.setFrame(2);
     }
   }
 
@@ -51,7 +60,6 @@ export class PlayerSprite extends Phaser.Physics.Arcade.Sprite {
 
   public disableMovement() {
     this.canMove = false;
-    this.moveStop();
   }
 
   public enableMovement() {
