@@ -17,7 +17,7 @@ export default class Start extends Phaser.Scene {
     this.load.spritesheet([
       {
         key: "player_idle",
-        url: "./assets/sprites/scientist.png",
+        url: "assets/sprites/scientist.png",
         frameConfig: {
           frameWidth: 32,
           frameHeight: 42,

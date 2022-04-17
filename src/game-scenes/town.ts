@@ -39,16 +39,16 @@ export class Town extends BaseScene {
   }
 
   preload() {
-    this.load.image("transparent", "/assets/sprites/transparent.png");
-    this.load.image("abby", "/assets/sprites/abby.png");
-    this.load.image("chloe", "/assets/sprites/chloe.png");
-    this.load.image("ellie", "/assets/sprites/ellie.png");
-    this.load.image("joel", "/assets/sprites/joel.png");
-    this.load.image("nate", "/assets/sprites/nate.png");
-    this.load.image("tiles", "/assets/tilemaps/town.png");
-    this.load.tilemapTiledJSON("map", "/assets/tilemaps/town.json");
+    this.load.image("transparent", "assets/sprites/transparent.png");
+    this.load.image("abby", "assets/sprites/abby.png");
+    this.load.image("chloe", "assets/sprites/chloe.png");
+    this.load.image("ellie", "assets/sprites/ellie.png");
+    this.load.image("joel", "assets/sprites/joel.png");
+    this.load.image("nate", "assets/sprites/nate.png");
+    this.load.image("tiles", "assets/tilemaps/town.png");
+    this.load.tilemapTiledJSON("map", "assets/tilemaps/town.json");
 
-    this.load.spritesheet("car", "./assets/sprites/car.png", {
+    this.load.spritesheet("car", "assets/sprites/car.png", {
       frameWidth: 74,
       frameHeight: 36,
     });
