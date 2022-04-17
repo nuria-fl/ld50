@@ -36,6 +36,11 @@ export class Town extends BaseScene {
 
   preload() {
     this.load.image("transparent", "/assets/sprites/transparent.png");
+    this.load.image("abby", "/assets/sprites/abby.png");
+    this.load.image("chloe", "/assets/sprites/chloe.png");
+    this.load.image("ellie", "/assets/sprites/ellie.png");
+    this.load.image("joel", "/assets/sprites/joel.png");
+    this.load.image("nate", "/assets/sprites/nate.png");
     this.load.image("tiles", "/assets/tilemaps/town.png");
     this.load.tilemapTiledJSON("map", "/assets/tilemaps/town.json");
   }
@@ -43,17 +48,28 @@ export class Town extends BaseScene {
   async create() {
     super.create();
     this.cameras.main.setBounds(0, 0, 2432, 1856);
-    this.HUDmoney = this.add.text(710, 30, `💸 ${this.money}`, {
+    const HUDbg = this.add.graphics({
+      fillStyle: {
+        color: 0x222222,
+      },
+    });
+    HUDbg.fillRect(620, 0, 180, 35);
+    HUDbg.setScrollFactor(0, 0);
+    HUDbg.setDepth(100);
+
+    this.HUDmoney = this.add.text(715, 0, `$ ${this.money}`, {
       fontFamily: "VT323, monospace",
-      padding: { y: 3 },
-      color: "#222",
+      fontSize: "30px",
+      padding: { y: 2 },
+      color: "#d9f7ca",
     });
     this.HUDmoney.setScrollFactor(0, 0);
     this.HUDmoney.setDepth(100);
-    this.HUDtime = this.add.text(630, 30, `⏰ ${this.timeLeft}`, {
+    this.HUDtime = this.add.text(640, 0, `${this.timeLeft}`, {
       fontFamily: "VT323, monospace",
-      padding: { y: 3 },
-      color: "#222",
+      fontSize: "30px",
+      padding: { y: 2 },
+      color: "#d9f7ca",
     });
     this.HUDtime.setScrollFactor(0, 0);
     this.HUDtime.setDepth(100);
@@ -295,6 +311,7 @@ export class Town extends BaseScene {
   setupNeighbourNate() {
     let talkedTo = false;
     const neighbour = this.physics.add.staticImage(2336, 1760, "nate");
+    neighbour.setFlipX(true);
 
     this.physics.add.collider(this.player, neighbour, async () => {
       if (talkedTo) {
@@ -329,7 +346,7 @@ export class Town extends BaseScene {
 
   decreaseMoney(amount: number) {
     this.money -= amount;
-    this.HUDmoney.text = `💸 ${this.money}`;
+    this.HUDmoney.text = `$ ${this.money}`;
     this.HUDmoney.updateText();
   }
 
@@ -337,7 +354,7 @@ export class Town extends BaseScene {
     const minutes = Math.floor(this.timeLeft / 60000);
     const seconds = (this.timeLeft % 60000) / 1000;
     const displaySeconds = `${seconds < 10 ? "0" : ""}${seconds.toFixed(0)}`;
-    const displayTime = `⏰ ${minutes}:${displaySeconds}`;
+    const displayTime = `${minutes}:${displaySeconds}`;
     this.HUDtime.text = displayTime;
     this.HUDtime.updateText();
 
