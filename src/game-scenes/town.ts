@@ -138,6 +138,7 @@ export class Town extends BaseScene {
             text.destroy();
             textBg.destroy();
             this.isInCar = false;
+            this.car.setFrame(0);
 
             this.player.setX(this.car.x);
             this.player.setY(this.car.y + 50);
