@@ -4,6 +4,8 @@ A game for Ludum Dare 50 built with [Phaser 3](https://github.com/photonstorm/ph
 
 [Play on itch.io](https://nuria.itch.io/clima?secret=XvtwS5esRbtcHIwG2ygfqKjDHrU).
 
+![](public/assets/cover.png)
+
 ## Available Commands
 
 | Command       | Description                                              |
