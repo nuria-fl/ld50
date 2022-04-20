@@ -39,6 +39,10 @@ export class Town extends BaseScene {
   }
 
   preload() {
+    this.load.audio("fx_foah", ["assets/audio/foah.mp3"]);
+    this.load.audio("fx_mmmaaa", ["assets/audio/mmmaaa.mp3"]);
+    this.load.audio("fx_todo", ["assets/audio/todo_list.mp3"]);
+    this.load.audio("fx_endgame", ["assets/audio/endgame.mp3"]);
     this.load.image("transparent", "assets/sprites/transparent.png");
     this.load.image("abby", "assets/sprites/abby.png");
     this.load.image("chloe", "assets/sprites/chloe.png");
@@ -201,8 +205,11 @@ export class Town extends BaseScene {
     groceriesStore.setBodySize(64, 64);
 
     this.physics.add.collider(this.player, groceriesStore, async () => {
+      const fx_mmmaaa = this.sound.add("fx_mmmaaa");
+      const fx_foah = this.sound.add("fx_foah");
       if (this.todos[0].done) {
         await this.createDialogBox("I already have my groceries");
+        fx_foah.play();
         return;
       }
       await this.createInteractionBox(
@@ -213,11 +220,13 @@ export class Town extends BaseScene {
         if (key === "1" || key === "2" || key === "3") {
           if (!this.hasEnoughMoney(options[key])) {
             this.closeInteractionBox();
+            fx_foah.play();
             return await this.createDialogBox("I don't have enough money!");
           }
           this.decreaseMoney(options[key]);
           this.groceriesChosenOption = key;
           this.todos[0].done = true;
+          fx_mmmaaa.play();
           this.closeInteractionBox();
           return;
         }
@@ -229,10 +238,13 @@ export class Town extends BaseScene {
   setupPostalOffice() {
     const postalOffice = this.physics.add.staticImage(1632, 544, "transparent");
     postalOffice.setBodySize(64, 64);
+    const fx_mmmaaa = this.sound.add("fx_mmmaaa");
+    const fx_foah = this.sound.add("fx_foah");
 
     this.physics.add.collider(this.player, postalOffice, async () => {
       if (this.todos[1].done) {
         await this.createDialogBox("I already sent the letter");
+        fx_foah.play();
         return;
       }
       await this.createInteractionBox(
@@ -244,11 +256,13 @@ export class Town extends BaseScene {
         if (key === "y") {
           if (!this.hasEnoughMoney(10)) {
             this.closeInteractionBox();
+            fx_foah.play();
             return await this.createDialogBox("I don't have enough money!");
           }
           this.decreaseMoney(10);
           this.todos[1].done = true;
           this.closeInteractionBox();
+          fx_mmmaaa.play();
           return;
         }
         this.closeInteractionBox();
@@ -259,12 +273,15 @@ export class Town extends BaseScene {
   setupGardenCenter() {
     const gardenCenter = this.physics.add.staticImage(2240, 288, "transparent");
     gardenCenter.setBodySize(64, 64);
+    const fx_mmmaaa = this.sound.add("fx_mmmaaa");
+    const fx_foah = this.sound.add("fx_foah");
 
     this.physics.add.collider(this.player, gardenCenter, async () => {
       if (this.todos[3].done) {
         await this.createDialogBox(
           "I already have everything I need to grow my garden"
         );
+        fx_foah.play();
         return;
       }
       await this.createInteractionBox(
@@ -276,10 +293,12 @@ export class Town extends BaseScene {
         if (key === "y") {
           if (!this.hasEnoughMoney(60)) {
             this.closeInteractionBox();
+            fx_foah.play();
             return await this.createDialogBox("I don't have enough money!");
           }
           this.decreaseMoney(60);
           this.todos[3].done = true;
+          fx_mmmaaa.play();
           this.closeInteractionBox();
           return;
         }
@@ -291,11 +310,13 @@ export class Town extends BaseScene {
   setupNeighbourAbby() {
     let talkedTo = false;
     const neighbour = this.physics.add.staticImage(1152, 448, "abby");
-
+    const fx_mmmaaa = this.sound.add("fx_mmmaaa");
+    const fx_foah = this.sound.add("fx_foah");
     this.physics.add.collider(this.car, neighbour);
     this.physics.add.collider(this.player, neighbour, async () => {
       if (talkedTo) {
         await this.createDialogBox("Have a nice day Abby!");
+        fx_foah.play();
         return;
       }
       await this.createDialogBox("Hi Abby! Do you have a minute?");
@@ -308,6 +329,7 @@ export class Town extends BaseScene {
       );
       await this.createDialogBox("Abby: uhmm ok");
       this.talkToNeighbour();
+      fx_mmmaaa.play();
       talkedTo = true;
     });
   }
@@ -315,11 +337,13 @@ export class Town extends BaseScene {
   setupNeighbourChloe() {
     let talkedTo = false;
     const neighbour = this.physics.add.staticImage(288, 1248, "chloe");
-
+    const fx_mmmaaa = this.sound.add("fx_mmmaaa");
+    const fx_foah = this.sound.add("fx_foah");
     this.physics.add.collider(this.car, neighbour);
     this.physics.add.collider(this.player, neighbour, async () => {
       if (talkedTo) {
         await this.createDialogBox("Enjoy your day Chloe!");
+        fx_foah.play();
         return;
       }
       await this.createDialogBox(
@@ -334,6 +358,7 @@ export class Town extends BaseScene {
       );
       await this.createDialogBox("Chloe: Oh geez.");
       this.talkToNeighbour();
+      fx_mmmaaa.play();
       talkedTo = true;
     });
   }
@@ -341,11 +366,14 @@ export class Town extends BaseScene {
   setupNeighbourJoel() {
     let talkedTo = false;
     const neighbour = this.physics.add.staticImage(800, 400, "joel");
+    const fx_mmmaaa = this.sound.add("fx_mmmaaa");
+    const fx_foah = this.sound.add("fx_foah");
 
     this.physics.add.collider(this.car, neighbour);
     this.physics.add.collider(this.player, neighbour, async () => {
       if (talkedTo) {
         await this.createDialogBox("See you around Joel!");
+        fx_foah.play();
         return;
       }
       await this.createDialogBox("Hi Joel! How are you doing?");
@@ -358,6 +386,7 @@ export class Town extends BaseScene {
       );
       await this.createDialogBox("Joel: Awesome.");
       this.talkToNeighbour();
+      fx_mmmaaa.play();
       talkedTo = true;
     });
   }
@@ -365,11 +394,14 @@ export class Town extends BaseScene {
   setupNeighbourEllie() {
     let talkedTo = false;
     const neighbour = this.physics.add.staticImage(1888, 1184, "ellie");
+    const fx_mmmaaa = this.sound.add("fx_mmmaaa");
+    const fx_foah = this.sound.add("fx_foah");
 
     this.physics.add.collider(this.car, neighbour);
     this.physics.add.collider(this.player, neighbour, async () => {
       if (talkedTo) {
         await this.createDialogBox("See ya Ellie!");
+        fx_foah.play();
         return;
       }
       await this.createDialogBox("Ellie! Just who I wanted to see.");
@@ -382,6 +414,7 @@ export class Town extends BaseScene {
       );
       await this.createDialogBox("Ellie: *blank stare*");
       this.talkToNeighbour();
+      fx_mmmaaa.play();
       talkedTo = true;
     });
   }
@@ -390,11 +423,14 @@ export class Town extends BaseScene {
     let talkedTo = false;
     const neighbour = this.physics.add.staticImage(2336, 1760, "nate");
     neighbour.setFlipX(true);
+    const fx_mmmaaa = this.sound.add("fx_mmmaaa");
+    const fx_foah = this.sound.add("fx_foah");
 
     this.physics.add.collider(this.car, neighbour);
     this.physics.add.collider(this.player, neighbour, async () => {
       if (talkedTo) {
         await this.createDialogBox("Have a nice day Nate!");
+        fx_foah.play();
         return;
       }
       await this.createDialogBox("Hey Nate!");
@@ -407,6 +443,7 @@ export class Town extends BaseScene {
       );
       await this.createDialogBox("Nate: …yeah I'm doing great too.");
       this.talkToNeighbour();
+      fx_mmmaaa.play();
       talkedTo = true;
     });
   }

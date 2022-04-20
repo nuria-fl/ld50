@@ -30,6 +30,8 @@ export class BaseScene extends Phaser.Scene {
         ev.stopImmediatePropagation();
         if (!this.enableControls) return;
         ev.preventDefault();
+        const fx_mmmaaa = this.sound.add("fx_todo");
+        fx_mmmaaa.play();
         this.toggleToDoList();
       }
     });

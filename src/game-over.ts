@@ -21,7 +21,9 @@ export default class GameOver extends Phaser.Scene {
     super("game-over");
   }
 
-  preload() {}
+  preload() {
+    this.load.audio("fx_endgame", ["assets/audio/endgame.mp3"]);
+  }
 
   create({ todos, groceriesChosenOption, hasDrivenCar }) {
     this.todos = todos;
@@ -77,6 +79,8 @@ export default class GameOver extends Phaser.Scene {
       .on("pointerdown", () => {
         this.goToPlay();
       });
+    const fx_endgame = this.sound.add("fx_endgame");
+    fx_endgame.play();
   }
 
   goToPlay() {

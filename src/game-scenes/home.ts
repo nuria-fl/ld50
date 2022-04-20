@@ -28,6 +28,9 @@ export class Home extends BaseScene {
 
   preload() {
     this.load.audio("fx_door", ["assets/audio/fx_cross_door.mp3"]);
+    this.load.audio("fx_foah", ["assets/audio/foah.mp3"]);
+    this.load.audio("fx_mmmaaa", ["assets/audio/mmmaaa.mp3"]);
+    this.load.audio("fx_todo", ["assets/audio/todo_list.mp3"]);
     this.load.image("table", "assets/sprites/table.png");
     this.load.image("door", "assets/sprites/door.png");
     this.load.image("house-top", "assets/sprites/house-top.png");
@@ -66,6 +69,8 @@ export class Home extends BaseScene {
       if (!this.todos[0].done) {
         this.player.disableMovement();
         await this.createDialogBox("Dear Mrs President…");
+        const fx_mmmaaa = this.sound.add("fx_mmmaaa");
+        fx_mmmaaa.play();
         this.todos[0].done = true;
         this.player.enableMovement();
       }
@@ -77,6 +82,8 @@ export class Home extends BaseScene {
         await this.createDialogBox(
           "Ok, I can hand out this leaflets to the neighbours."
         );
+        const fx_mmmaaa = this.sound.add("fx_mmmaaa");
+        fx_mmmaaa.play();
         this.leaflets.destroy();
         this.todos[1].done = true;
         this.player.enableMovement();
